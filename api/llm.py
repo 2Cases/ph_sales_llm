@@ -36,6 +36,9 @@ class PharmacyChatbot:
         if not self.api_key:
             raise ValueError("OpenAI API key is required. Set OPENAI_API_KEY environment variable or pass it directly.")
         
+        # Get model from environment variable
+        self.openai_model = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+        
         self.client = OpenAI(api_key=self.api_key)
         self.conversation_history = []
         self.pharmacy_data = None
@@ -123,7 +126,7 @@ class PharmacyChatbot:
             
             # Make LLM API call
             response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model=self.openai_model,
                 messages=messages,
                 max_tokens=500,
                 temperature=0.7

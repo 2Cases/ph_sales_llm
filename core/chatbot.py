@@ -64,6 +64,9 @@ class PharmacySalesChatbot:
                     "or pass openai_api_key parameter."
                 )
             
+            # Get model from environment variable
+            self.openai_model = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+            
             self.llm_client = OpenAI(api_key=self.openai_api_key)
             debug.log_step("OpenAI client initialized")
             
@@ -247,21 +250,21 @@ class PharmacySalesChatbot:
             
             enhanced_system_prompt = f"""{SYSTEM_PROMPT}
 
-CURRENT CONTEXT:
-{context}
+            CURRENT CONTEXT:
+            {context}
 
-RESPONSE STRATEGY:
-- Type: {strategy['response_type']}
-- Personalization: {strategy['personalization_level']}
-- Context: {strategy_hints}
-- Priority Actions: {', '.join(strategy.get('priority_actions', []))}
+            RESPONSE STRATEGY:
+            - Type: {strategy['response_type']}
+            - Personalization: {strategy['personalization_level']}
+            - Context: {strategy_hints}
+            - Priority Actions: {', '.join(strategy.get('priority_actions', []))}
 
-INSTRUCTIONS:
-- Use the context above to personalize your response
-- Be natural and conversational
-- If asking for information, explain why it's helpful
-- Always offer next steps (email or callback)
-"""
+            INSTRUCTIONS:
+            - Use the context above to personalize your response
+            - Be natural and conversational
+            - If asking for information, explain why it's helpful
+            - Always offer next steps (email or callback)
+            """
             
             # Prepare conversation history for LLM
             messages = [{"role": "system", "content": enhanced_system_prompt}]
@@ -275,7 +278,7 @@ INSTRUCTIONS:
             
             # Make LLM API call
             response = self.llm_client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model=self.openai_model,
                 messages=messages,
                 max_tokens=500,
                 temperature=0.7
@@ -285,13 +288,13 @@ INSTRUCTIONS:
             
             # Log LLM usage
             tokens_used = response.usage.total_tokens if response.usage else None
-            self.logger.log_llm_call("gpt-3.5-turbo", tokens_used, True)
+            self.logger.log_llm_call(self.openai_model, tokens_used, True)
             
             debug.log_step("LLM response generated successfully")
             return llm_response
             
         except Exception as e:
-            self.logger.log_llm_call("gpt-3.5-turbo", None, False)
+            self.logger.log_llm_call(self.openai_model, None, False)
             debug.log_step(f"LLM call failed: {e}")
             
             # Fallback response
@@ -319,13 +322,13 @@ INSTRUCTIONS:
             # New lead greeting
             return """Thank you for calling Pharmesol! I don't have your information in our system yet.
 
-Could you please tell me:
-1. Your pharmacy name
-2. Your location  
-3. Approximately how many prescriptions you fill per month
+            Could you please tell me:
+            1. Your pharmacy name
+            2. Your location  
+            3. Approximately how many prescriptions you fill per month
 
-This will help me understand how we can best support your pharmacy's needs."""
-    
+            This will help me understand how we can best support your pharmacy's needs."""
+                
     def _generate_fallback_response(self) -> str:
         """Generate fallback response when LLM is unavailable."""
         

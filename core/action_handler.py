@@ -266,22 +266,22 @@ class ActionHandler:
         
         body = f"""Dear {pharmacy.contact_person or 'there'},
 
-Thank you for reaching out to us today. It's always great to hear from {pharmacy.name}.
+        Thank you for reaching out to us today. It's always great to hear from {pharmacy.name}.
 
-Based on our conversation and your {pharmacy.rx_volume or 'significant'} monthly prescription volume, here's how Pharmesol can specifically support your pharmacy:
+        Based on our conversation and your {pharmacy.rx_volume or 'significant'} monthly prescription volume, here's how Pharmesol can specifically support your pharmacy:
 
-{volume_benefits}
+        {volume_benefits}
 
-Our team understands the unique challenges facing pharmacies in {pharmacy.location_display}, and we're committed to providing solutions that help you serve your community better.
+        Our team understands the unique challenges facing pharmacies in {pharmacy.location_display}, and we're committed to providing solutions that help you serve your community better.
 
-I'll be preparing detailed pricing information tailored to your volume and will follow up within the next business day.
+        I'll be preparing detailed pricing information tailored to your volume and will follow up within the next business day.
 
-Thank you for considering Pharmesol as your distribution partner.
+        Thank you for considering Pharmesol as your distribution partner.
 
-Best regards,
-Pharmesol Sales Team
-Phone: (555) 123-4567
-Email: sales@pharmesol.com"""
+        Best regards,
+        Pharmesol Sales Team
+        Phone: (555) 123-4567
+        Email: sales@pharmesol.com"""
 
         return subject, body
     
@@ -305,20 +305,20 @@ Email: sales@pharmesol.com"""
         
         body = f"""Dear {lead.contact_person or 'there'},
 
-Thank you for your interest in Pharmesol's pharmaceutical distribution services.
+        Thank you for your interest in Pharmesol's pharmaceutical distribution services.
 
-Based on our conversation about {pharmacy_name}, here's what we can offer:
+        Based on our conversation about {pharmacy_name}, here's what we can offer:
 
-{volume_benefits}
+        {volume_benefits}
 
-We're excited about the opportunity to support {pharmacy_name}'s success and help you better serve your community.
+        We're excited about the opportunity to support {pharmacy_name}'s success and help you better serve your community.
 
-Our team will follow up within the next few business days to discuss specific pricing and service details tailored to your needs.
+        Our team will follow up within the next few business days to discuss specific pricing and service details tailored to your needs.
 
-Best regards,
-Pharmesol Sales Team
-Phone: (555) 123-4567
-Email: sales@pharmesol.com"""
+        Best regards,
+        Pharmesol Sales Team
+        Phone: (555) 123-4567
+        Email: sales@pharmesol.com"""
 
         return subject, body
     
@@ -327,28 +327,28 @@ Email: sales@pharmesol.com"""
         
         benefits_map = {
             PharmacyType.HIGH_VOLUME: """• Premium tier pricing with significant volume discounts
-• Dedicated account manager for personalized service
-• Priority inventory allocation and emergency delivery
-• Advanced inventory management tools and reporting
-• Flexible payment terms and credit options""",
+            • Dedicated account manager for personalized service
+            • Priority inventory allocation and emergency delivery
+            • Advanced inventory management tools and reporting
+            • Flexible payment terms and credit options""",
             
             PharmacyType.MEDIUM_VOLUME: """• Volume-based pricing tiers with competitive rates
-• Reliable delivery scheduling (2-3 times per week)
-• Account management support and regular check-ins
-• Inventory optimization assistance
-• Emergency delivery services when needed""",
+            • Reliable delivery scheduling (2-3 times per week)
+            • Account management support and regular check-ins
+            • Inventory optimization assistance
+            • Emergency delivery services when needed""",
             
             PharmacyType.LOW_VOLUME: """• Competitive pricing structure designed for growing pharmacies
-• Flexible delivery options (weekly or bi-weekly)
-• Growth-oriented service packages
-• Inventory management support
-• No minimum order requirements to start""",
+            • Flexible delivery options (weekly or bi-weekly)
+            • Growth-oriented service packages
+            • Inventory management support
+            • No minimum order requirements to start""",
             
             PharmacyType.STARTUP: """• Startup-friendly pricing with room to grow
-• Flexible minimum order requirements
-• Business development support and guidance
-• Scalable solutions that adapt to your growth
-• Educational resources for pharmacy operations"""
+            • Flexible minimum order requirements
+            • Business development support and guidance
+            • Scalable solutions that adapt to your growth
+            • Educational resources for pharmacy operations"""
         }
         
         return benefits_map.get(pharmacy_type, benefits_map[PharmacyType.STARTUP])

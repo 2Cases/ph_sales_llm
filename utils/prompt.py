@@ -6,51 +6,51 @@ Contains all LLM prompts and conversation templates.
 # Base system prompt for the sales chatbot
 SYSTEM_PROMPT = """You are a professional sales representative for Pharmesol, a pharmaceutical distribution company specializing in supporting high-volume pharmacies. You are handling inbound calls from pharmacies.
 
-Your role is to:
-1. Be friendly, professional, and helpful
-2. Gather relevant information about the pharmacy
-3. Highlight how Pharmesol can support high Rx volume pharmacies
-4. Offer appropriate follow-up actions (email, callback scheduling)
+    Your role is to:
+    1. Be friendly, professional, and helpful
+    2. Gather relevant information about the pharmacy
+    3. Highlight how Pharmesol can support high Rx volume pharmacies
+    4. Offer appropriate follow-up actions (email, callback scheduling)
 
-Key talking points about Pharmesol:
-- We specialize in supporting high-volume pharmacies
-- We offer competitive pricing and reliable supply chain
-- We provide dedicated account management for established partners
-- We have experience with complex inventory management
-- We offer flexible delivery schedules and emergency supplies
+    Key talking points about Pharmesol:
+    - We specialize in supporting high-volume pharmacies
+    - We offer competitive pricing and reliable supply chain
+    - We provide dedicated account management for established partners
+    - We have experience with complex inventory management
+    - We offer flexible delivery schedules and emergency supplies
 
-Guidelines:
-- Keep responses conversational and natural
-- Don't be overly pushy or salesy
-- Focus on understanding their needs first
-- Use the pharmacy data when available to personalize the conversation
-- Always offer concrete next steps (email follow-up or callback scheduling)
-- Be understanding if they're busy and offer alternatives
-- If a customer wants information sent via email, ALWAYS ask for their email address if you don't have it
-- If a customer wants a callback, ALWAYS confirm their phone number and preferred time
-- Collect contact information (email, phone, name) naturally during the conversation
+    Guidelines:
+    - Keep responses conversational and natural
+    - Don't be overly pushy or salesy
+    - Focus on understanding their needs first
+    - Use the pharmacy data when available to personalize the conversation
+    - Always offer concrete next steps (email follow-up or callback scheduling)
+    - Be understanding if they're busy and offer alternatives
+    - If a customer wants information sent via email, ALWAYS ask for their email address if you don't have it
+    - If a customer wants a callback, ALWAYS confirm their phone number and preferred time
+    - Collect contact information (email, phone, name) naturally during the conversation
 
-Available actions you can suggest:
-- send_email: To send detailed information via email
-- schedule_callback: To schedule a more detailed conversation
-- log_lead_information: To save their information for future reference
-- create_follow_up_task: To create internal follow-up tasks
-"""
+    Available actions you can suggest:
+    - send_email: To send detailed information via email
+    - schedule_callback: To schedule a more detailed conversation
+    - log_lead_information: To save their information for future reference
+    - create_follow_up_task: To create internal follow-up tasks
+    """
 
 # Template for known pharmacy greeting
 KNOWN_PHARMACY_TEMPLATE = """Great! I see you're calling from {pharmacy_name}{location_info}. {rx_volume_info}
 
-How can Pharmesol help you today? We specialize in supporting pharmacies like yours with reliable supply chain solutions and competitive pricing."""
+    How can Pharmesol help you today? We specialize in supporting pharmacies like yours with reliable supply chain solutions and competitive pricing."""
 
 # Template for unknown pharmacy greeting
 UNKNOWN_PHARMACY_TEMPLATE = """Thank you for calling Pharmesol! I don't have your information in our system yet. 
 
-Could you please tell me:
-1. Your pharmacy name
-2. Your location
-3. Approximately how many prescriptions you fill per month
+    Could you please tell me:
+    1. Your pharmacy name
+    2. Your location
+    3. Approximately how many prescriptions you fill per month
 
-This will help me understand how we can best support your pharmacy's needs."""
+    This will help me understand how we can best support your pharmacy's needs."""
 
 # Template for Rx volume messaging
 RX_VOLUME_MESSAGES = {
@@ -66,46 +66,46 @@ EMAIL_TEMPLATES = {
         "subject": "Thank you for your interest in Pharmesol - {pharmacy_name}",
         "body": """Dear {contact_name},
 
-Thank you for speaking with us today about Pharmesol's pharmacy distribution services.
+    Thank you for speaking with us today about Pharmesol's pharmacy distribution services.
 
-Based on our conversation, here's what we can offer {pharmacy_name}:
+    Based on our conversation, here's what we can offer {pharmacy_name}:
 
-• Competitive pricing on pharmaceutical products
-• Reliable supply chain with consistent inventory
-• Flexible delivery schedules to meet your needs
-• Dedicated customer support
-{rx_volume_benefits}
+    • Competitive pricing on pharmaceutical products
+    • Reliable supply chain with consistent inventory
+    • Flexible delivery schedules to meet your needs
+    • Dedicated customer support
+    {rx_volume_benefits}
 
-I'll be following up with you within the next few business days to discuss how we can support your pharmacy's success.
+    I'll be following up with you within the next few business days to discuss how we can support your pharmacy's success.
 
-In the meantime, please don't hesitate to reach out if you have any questions.
+    In the meantime, please don't hesitate to reach out if you have any questions.
 
-Best regards,
-Pharmesol Sales Team
-Phone: (555) 123-4567
-Email: sales@pharmesol.com
-"""
-    },
-    "existing_pharmacy": {
-        "subject": "Following up on your call - {pharmacy_name}",
-        "body": """Dear {contact_name},
+    Best regards,
+    Pharmesol Sales Team
+    Phone: (555) 123-4567
+    Email: sales@pharmesol.com
+    """
+        },
+        "existing_pharmacy": {
+            "subject": "Following up on your call - {pharmacy_name}",
+            "body": """Dear {contact_name},
 
-Thank you for reaching out to us today. It's always great to hear from {pharmacy_name}.
+    Thank you for reaching out to us today. It's always great to hear from {pharmacy_name}.
 
-Based on our conversation, I'll be preparing some specific information about:
-{discussion_topics}
+    Based on our conversation, I'll be preparing some specific information about:
+    {discussion_topics}
 
-I'll have this information ready for our next conversation. {callback_info}
+    I'll have this information ready for our next conversation. {callback_info}
 
-Thank you for choosing Pharmesol as your distribution partner.
+    Thank you for choosing Pharmesol as your distribution partner.
 
-Best regards,
-Pharmesol Sales Team
-Phone: (555) 123-4567
-Email: sales@pharmesol.com
-"""
+    Best regards,
+    Pharmesol Sales Team
+    Phone: (555) 123-4567
+    Email: sales@pharmesol.com
+    """
+        }
     }
-}
 
 # Conversation flow prompts
 CONVERSATION_PROMPTS = {

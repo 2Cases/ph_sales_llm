@@ -1,6 +1,4 @@
-# Pharmacy Sales Chatbot - Production-Ready Architecture
-
-A sophisticated, production-ready pharmacy sales chatbot with **clean architecture**, **excellent error handling**, and **high maintainability**. This system simulates handling inbound phone calls from pharmacies contacting Pharmesol, a pharmaceutical distribution company, emphasizing **usability, readability, and proper organization of logic**.
+# Pharmacy Sales Chatbot
 
 ## 🎯 Overview
 
@@ -116,7 +114,6 @@ pharmechallenge/
 │   └── function_calls.py   # Mock utility functions (email, callbacks)
 ├── demos/                  # Demo scripts and tests
 │   ├── __init__.py
-│   ├── demo_refactored.py  # Comprehensive architecture demonstration
 │   ├── full_demo.py        # Complete AI integration demo
 │   ├── demo.py             # Basic functionality demo
 ├── tests/    
@@ -155,25 +152,6 @@ PHARMACY_API_URL=https://67e14fb758cc6bf785254550.mockapi.io
 
 ## 🚀 Usage Examples
 
-### Basic Usage (Refactored Architecture)
-```python
-from chatbot import PharmacySalesChatbot
-
-# Initialize with clean configuration (uses environment variables)
-with PharmacySalesChatbot(log_level="INFO") as bot:
-    # Start conversation
-    greeting = bot.start_conversation("+1-555-123-4567")
-    print(f"Bot: {greeting}")
-    
-    # Process messages
-    response = bot.process_message("Can you send me pricing information?")
-    print(f"Bot: {response}")
-    
-    # Get comprehensive summary
-    summary = bot.get_conversation_summary()
-    print(f"Actions taken: {summary['actions_taken']}")
-```
-
 ### Debug Mode
 ```python
 # Enable comprehensive debugging
@@ -201,12 +179,6 @@ analysis = flow_manager.analyze_user_message("Send me pricing info at test@pharm
 ```
 
 ## 🎮 Demo Scripts
-
-### Run Comprehensive Demo (Refactored)
-```bash
-python demos/demo_refactored.py
-```
-Shows the complete refactored architecture with clean error handling and logging.
 
 ### Run Original Demo
 ```bash
@@ -324,8 +296,6 @@ with PharmacyAPIClient() as api:
 
 ## 🎉 Benefits Summary
 
-This refactored architecture provides:
-
 - **🧩 Modularity**: Clean component separation makes the system easy to understand and modify
 - **🛡️ Reliability**: Comprehensive error handling ensures the system gracefully handles failures
 - **🔍 Observability**: Detailed logging and debugging make troubleshooting straightforward
@@ -333,21 +303,3 @@ This refactored architecture provides:
 - **📈 Scalability**: Clean abstractions make it easy to add new features or integrate new services
 - **🎯 Usability**: Simple API that's powerful underneath - easy for developers to use
 - **🔧 Maintainability**: Well-organized code that's easy to modify, extend, or refactor
-
-## 📈 Future Enhancements
-
-Potential improvements could include:
-- Voice-to-text integration for real phone calls
-- Advanced CRM system integration
-- Machine learning for better intent classification
-- Multi-language support with localized templates
-- Advanced analytics and reporting dashboards
-- A/B testing framework for conversation optimization
-
-## 📄 License
-
-This is a demonstration project for educational purposes showcasing production-ready software engineering practices.
-
----
-
-The refactored system demonstrates **production-ready code** with **excellent engineering practices** while maintaining the core functionality of the original pharmacy sales chatbot. The architecture emphasizes **usability, readability, and proper organization of logic** as requested.

@@ -9,17 +9,6 @@
 
 ### 2. **API Client Updates**
 
-#### **`api_client.py` (Refactored Version)**
-```python
-def __init__(self, base_url: Optional[str] = None, ...):
-    # Use environment variable or provided URL or default
-    self.base_url = (
-        base_url or 
-        os.getenv('PHARMACY_API_URL') or 
-        "https://67e14fb758cc6bf785254550.mockapi.io"
-    ).rstrip('/')
-```
-
 #### **`integration.py` (Original Version)**
 ```python
 def __init__(self, api_base_url: Optional[str] = None):

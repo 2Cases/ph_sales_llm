@@ -5,11 +5,18 @@ Separates conversation logic from LLM interactions for better maintainability.
 
 import logging
 import re
+import json
+import os
 from typing import Optional, Tuple, List
+from openai import OpenAI
+from dotenv import load_dotenv
 from core.models import (
     ConversationState, PharmacyData, LeadData, ConversationStatus,
     ConversationMessage, ActionRequest, PharmacyType
 )
+from utils.prompt import LLM_EXTRACTION_SYSTEM_PROMPT, get_extraction_prompt
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -24,11 +31,20 @@ class ConversationFlowManager:
     - Action requirement detection
     """
     
-    def __init__(self):
+    def __init__(self, openai_api_key: str = None):
         self.state: Optional[ConversationState] = None
         self.email_patterns = [
             r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
         ]
+        
+        # Initialize OpenAI client for LLM extraction
+        api_key = openai_api_key or os.getenv('OPENAI_API_KEY')
+        if api_key:
+            self.client = OpenAI(api_key=api_key)
+            self.openai_model = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+        else:
+            self.client = None
+            logger.warning("No OpenAI API key provided. Falling back to keyword matching.")
         
     def start_conversation(self, phone_number: str, pharmacy_data: Optional[PharmacyData] = None) -> ConversationState:
         """
@@ -57,7 +73,7 @@ class ConversationFlowManager:
     
     def analyze_user_message(self, message: str) -> dict:
         """
-        Analyze user message to extract intent and information.
+        Analyze user message to extract intent and information using LLM.
         
         Args:
             message: User's message content
@@ -68,6 +84,100 @@ class ConversationFlowManager:
         if not message:
             return {'intent': 'unclear', 'entities': {}, 'confidence': 0.0}
         
+        # Use LLM extraction if available, otherwise fall back to keyword matching
+        if self.client:
+            return self._analyze_with_llm(message)
+        else:
+            return self._analyze_with_keywords(message)
+    
+    def _analyze_with_llm(self, message: str) -> dict:
+        """Analyze message using LLM-based extraction."""
+        try:
+            extraction_prompt = get_extraction_prompt(message)
+            
+            response = self.client.chat.completions.create(
+                model=self.openai_model,
+                messages=[
+                    {"role": "system", "content": LLM_EXTRACTION_SYSTEM_PROMPT},
+                    {"role": "user", "content": extraction_prompt}
+                ],
+                max_tokens=300,
+                temperature=0.1
+            )
+            
+            extracted_json = response.choices[0].message.content.strip()
+            extracted_info = json.loads(extracted_json)
+            
+            # Convert LLM extraction format to conversation manager format
+            analysis = {
+                'intent': self._map_llm_intent_to_manager(extracted_info.get('intent', 'general_inquiry')),
+                'entities': {},
+                'confidence': 0.9,  # High confidence for LLM extraction
+                'suggested_actions': []
+            }
+            
+            # Map contact info
+            contact_info = extracted_info.get('contact_info', {})
+            if contact_info.get('email'):
+                analysis['entities']['email'] = contact_info['email']
+            if contact_info.get('name'):
+                analysis['entities']['contact_person'] = contact_info['name']
+            
+            # Map pharmacy info
+            pharmacy_info = extracted_info.get('pharmacy_info', {})
+            if pharmacy_info.get('name'):
+                analysis['entities']['pharmacy_name'] = pharmacy_info['name']
+            if pharmacy_info.get('location'):
+                analysis['entities']['location'] = pharmacy_info['location']
+            if pharmacy_info.get('rx_volume'):
+                analysis['entities']['rx_volume'] = pharmacy_info['rx_volume']
+            
+            # Map scheduling preference
+            if extracted_info.get('scheduling_preference'):
+                analysis['entities']['preferred_time'] = extracted_info['scheduling_preference']
+            
+            # Add suggested actions based on intent
+            analysis['suggested_actions'] = self._get_suggested_actions(analysis['intent'], analysis['entities'])
+            
+            return analysis
+            
+        except json.JSONDecodeError:
+            logger.warning(f"Failed to parse LLM extraction JSON, falling back to keyword matching")
+            return self._analyze_with_keywords(message)
+        except Exception as e:
+            logger.error(f"LLM extraction failed: {e}, falling back to keyword matching")
+            return self._analyze_with_keywords(message)
+    
+    def _map_llm_intent_to_manager(self, llm_intent: str) -> str:
+        """Map LLM intent types to conversation manager intent types."""
+        intent_mapping = {
+            'email_request': 'request_email',
+            'callback_request': 'request_callback',
+            'general_inquiry': 'general_inquiry',
+            'objection': 'objection'
+        }
+        return intent_mapping.get(llm_intent, 'general_inquiry')
+    
+    def _get_suggested_actions(self, intent: str, entities: dict) -> list:
+        """Get suggested actions based on intent and entities."""
+        actions = []
+        
+        if intent == 'request_email':
+            if not entities.get('email') and not (self.state and self.state.has_email):
+                actions.append('ask_for_email')
+            else:
+                actions.append('send_email')
+        elif intent == 'request_callback':
+            actions.append('schedule_callback')
+        elif 'pharmacy_name' in entities or 'location' in entities:
+            actions.extend(['update_lead_data', 'assess_fit'])
+        elif 'rx_volume' in entities:
+            actions.extend(['assess_volume', 'present_value_prop'])
+            
+        return actions
+    
+    def _analyze_with_keywords(self, message: str) -> dict:
+        """Fallback keyword-based analysis."""
         message_lower = message.lower()
         analysis = {
             'intent': 'general_inquiry',
@@ -81,11 +191,11 @@ class ConversationFlowManager:
         if emails:
             analysis['entities']['email'] = emails[0]
         
-        # Detect intents
+        # Detect intents using keywords
         if self._is_email_request(message_lower):
             analysis['intent'] = 'request_email'
             analysis['confidence'] = 0.8
-            if not emails and not self.state.has_email:
+            if not emails and not (self.state and self.state.has_email):
                 analysis['suggested_actions'].append('ask_for_email')
         
         elif self._is_callback_request(message_lower):

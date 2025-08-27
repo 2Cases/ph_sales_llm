@@ -214,8 +214,8 @@ def main():
         elif command == 'test':
             # Run tests
             print("🧪 Running tests...")
-            from tests import tests
-            tests.run_all_tests()
+            from tests.tests import run_all_tests
+            run_all_tests()
             return
         elif command.startswith('+') or command.isdigit():
             # Phone number provided

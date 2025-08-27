@@ -5,6 +5,7 @@ Handles conversation flow and LLM API calls.
 
 import os
 import logging
+import json
 from typing import Dict, List, Optional, Any
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -14,7 +15,8 @@ load_dotenv()
 from utils.prompt import (
     SYSTEM_PROMPT, KNOWN_PHARMACY_TEMPLATE, UNKNOWN_PHARMACY_TEMPLATE,
     format_location_info, format_rx_volume_info, CONVERSATION_PROMPTS,
-    EMAIL_TEMPLATES, get_rx_volume_benefits
+    EMAIL_TEMPLATES, get_rx_volume_benefits, LLM_EXTRACTION_SYSTEM_PROMPT,
+    get_extraction_prompt
 )
 from utils.function_calls import send_email, schedule_callback, log_lead_information, create_follow_up_task
 
@@ -99,13 +101,16 @@ class PharmacyChatbot:
         # Add user message to conversation history
         self.conversation_history.append({"role": "user", "content": user_message})
         
-        # Check if user is requesting specific actions
-        if self._is_requesting_email(user_message):
-            return self._handle_email_request(user_message)
-        elif self._is_requesting_callback(user_message):
-            return self._handle_callback_request(user_message)
-        elif self._contains_contact_info(user_message):
-            self._extract_lead_information(user_message)
+        # Use LLM to extract intent and information from the message
+        extracted_info = self._extract_message_information(user_message)
+        
+        # Handle different intents based on LLM extraction
+        if extracted_info.get('intent') == 'email_request':
+            return self._handle_email_request(user_message, extracted_info)
+        elif extracted_info.get('intent') == 'callback_request':
+            return self._handle_callback_request(user_message, extracted_info)
+        elif extracted_info.get('has_contact_info'):
+            self._update_lead_information(extracted_info)
         
         # Generate response using LLM
         response = self._generate_llm_response()
@@ -154,60 +159,99 @@ class PharmacyChatbot:
         
         return f"{SYSTEM_PROMPT}\n\nCURRENT CONTEXT:\n{context}"
     
-    def _is_requesting_email(self, message: str) -> bool:
-        """Check if user is requesting email information."""
-        email_keywords = ['email', 'send me', 'mail me', 'information', 'details']
-        # Check for email request keywords OR if an email address is provided
-        has_email_keywords = any(keyword in message.lower() for keyword in email_keywords)
-        has_email_address = '@' in message
-        # Return True if requesting email info, regardless of whether email is provided in same message
-        return has_email_keywords or has_email_address
-    
-    def _is_requesting_callback(self, message: str) -> bool:
-        """Check if user is requesting a callback."""
-        callback_keywords = ['callback', 'call back', 'call me', 'schedule', 'later']
-        return any(keyword in message.lower() for keyword in callback_keywords)
-    
-    def _contains_contact_info(self, message: str) -> bool:
-        """Check if message contains contact information."""
-        return '@' in message or any(char.isdigit() for char in message)
-    
-    def _extract_lead_information(self, message: str) -> None:
-        """Extract and store lead information from user message."""
-        # Simple extraction - in production, you'd use NLP/regex for better extraction
-        words = message.split()
+    def _extract_message_information(self, message: str) -> Dict[str, Any]:
+        """
+        Use LLM to extract intent and information from user message.
         
-        # Look for email
-        for word in words:
-            if '@' in word and '.' in word:
-                self.lead_data['email'] = word
+        Args:
+            message: User message to analyze
+            
+        Returns:
+            Dictionary containing extracted information and intent
+        """
+        extraction_prompt = get_extraction_prompt(message)
         
-        # Look for pharmacy name patterns
-        if 'pharmacy' in message.lower() or 'drug' in message.lower():
-            # Extract potential pharmacy name
-            for i, word in enumerate(words):
-                if word.lower() in ['pharmacy', 'drug', 'store']:
-                    if i > 0:
-                        self.lead_data['pharmacy_name'] = ' '.join(words[max(0, i-2):i+1])
-        
-        # Look for location info
-        if 'located' in message.lower() or 'in ' in message.lower():
-            # Extract potential location
-            words_lower = [w.lower() for w in words]
-            if 'in' in words_lower:
-                idx = words_lower.index('in')
-                if idx + 1 < len(words):
-                    self.lead_data['location'] = words[idx + 1]
+        try:
+            response = self.client.chat.completions.create(
+                model=self.openai_model,
+                messages=[
+                    {"role": "system", "content": LLM_EXTRACTION_SYSTEM_PROMPT},
+                    {"role": "user", "content": extraction_prompt}
+                ],
+                max_tokens=300,
+                temperature=0.1
+            )
+            
+            extracted_json = response.choices[0].message.content.strip()
+            
+            # Try to parse JSON, fallback to basic structure if parsing fails
+            try:
+                return json.loads(extracted_json)
+            except json.JSONDecodeError:
+                logger.warning(f"Failed to parse LLM extraction JSON: {extracted_json}")
+                return self._fallback_extraction(message)
+                
+        except Exception as e:
+            logger.error(f"LLM extraction failed: {e}")
+            return self._fallback_extraction(message)
     
-    def _handle_email_request(self, message: str) -> str:
+    def _fallback_extraction(self, message: str) -> Dict[str, Any]:
+        """Fallback extraction using keyword matching if LLM fails."""
+        return {
+            "intent": self._determine_intent_fallback(message),
+            "has_contact_info": '@' in message or any(c.isdigit() for c in message),
+            "contact_info": {},
+            "pharmacy_info": {},
+            "scheduling_preference": "",
+            "specific_requests": []
+        }
+    
+    def _determine_intent_fallback(self, message: str) -> str:
+        """Fallback intent detection using keywords."""
+        message_lower = message.lower()
+        if any(keyword in message_lower for keyword in ['email', 'send me', 'mail me']):
+            return "email_request"
+        elif any(keyword in message_lower for keyword in ['callback', 'call back', 'call me', 'schedule']):
+            return "callback_request"
+        else:
+            return "general_inquiry"
+    
+    def _update_lead_information(self, extracted_info: Dict[str, Any]) -> None:
+        """Update lead information from LLM extraction."""
+        contact_info = extracted_info.get('contact_info', {})
+        pharmacy_info = extracted_info.get('pharmacy_info', {})
+        
+        # Update contact information
+        if contact_info.get('email'):
+            self.lead_data['email'] = contact_info['email']
+        if contact_info.get('phone'):
+            self.lead_data['phone'] = contact_info['phone']
+        if contact_info.get('name'):
+            self.lead_data['contact_name'] = contact_info['name']
+        
+        # Update pharmacy information
+        if pharmacy_info.get('name'):
+            self.lead_data['pharmacy_name'] = pharmacy_info['name']
+        if pharmacy_info.get('location'):
+            self.lead_data['location'] = pharmacy_info['location']
+        if pharmacy_info.get('rx_volume'):
+            self.lead_data['rx_volume'] = pharmacy_info['rx_volume']
+    
+    
+    def _handle_email_request(self, message: str, extracted_info: Dict[str, Any] = None) -> str:
         """Handle email information request."""
-        # First, try to extract email from current message
-        words = message.split()
+        # Get email from LLM extraction first, then fallback to previous methods
         email = None
-        for word in words:
-            if '@' in word and '.' in word:
-                email = word
-                break
+        if extracted_info and extracted_info.get('contact_info', {}).get('email'):
+            email = extracted_info['contact_info']['email']
+        
+        # Fallback: try to extract email from current message
+        if not email:
+            words = message.split()
+            for word in words:
+                if '@' in word and '.' in word:
+                    email = word
+                    break
         
         # If no email in current message, check if we have one stored from previous messages
         if not email and self.lead_data.get('email'):
@@ -250,16 +294,20 @@ class PharmacyChatbot:
         
         return f"Perfect! I've sent detailed information about Pharmesol's services to {email}. You should receive it within the next few minutes."
     
-    def _handle_callback_request(self, message: str) -> str:
+    def _handle_callback_request(self, message: str, extracted_info: Dict[str, Any] = None) -> str:
         """Handle callback scheduling request."""
-        # Extract preferred time if mentioned
+        # Get preferred time from LLM extraction first, then fallback to keyword matching
         preferred_time = "during business hours"
-        if "tomorrow" in message.lower():
-            preferred_time = "tomorrow during business hours"
-        elif "afternoon" in message.lower():
-            preferred_time = "this afternoon"
-        elif "morning" in message.lower():
-            preferred_time = "tomorrow morning"
+        if extracted_info and extracted_info.get('scheduling_preference'):
+            preferred_time = extracted_info['scheduling_preference']
+        else:
+            # Fallback to keyword matching
+            if "tomorrow" in message.lower():
+                preferred_time = "tomorrow during business hours"
+            elif "afternoon" in message.lower():
+                preferred_time = "this afternoon"
+            elif "morning" in message.lower():
+                preferred_time = "tomorrow morning"
         
         # Get contact name
         contact_name = "there"
@@ -269,7 +317,7 @@ class PharmacyChatbot:
             contact_name = self.lead_data['pharmacy_name']
         
         # Schedule callback using mock function
-        callback_details = schedule_callback(
+        schedule_callback(
             phone_number=self.phone_number,
             preferred_time=preferred_time,
             contact_name=contact_name,

@@ -194,3 +194,31 @@ def get_rx_volume_benefits(rx_volume):
         ])
     
     return "\n".join(benefits)
+
+# LLM Extraction System Prompt
+LLM_EXTRACTION_SYSTEM_PROMPT = """You are a data extraction assistant. Extract information from user messages and return only valid JSON."""
+
+# LLM Extraction Prompt Template
+def get_extraction_prompt(message: str) -> str:
+    """Generate extraction prompt for analyzing user messages."""
+    return f"""
+    Analyze the following user message and extract information in JSON format.
+    Return a JSON object with these fields:
+
+    1. "intent": One of ["email_request", "callback_request", "general_inquiry", "objection"]
+    2. "has_contact_info": true if message contains email, phone, or other contact details
+    3. "contact_info": object with any found contact information
+    - "email": email address if found
+    - "phone": phone number if found
+    - "name": person's name if mentioned
+    4. "pharmacy_info": object with any pharmacy-related information
+    - "name": pharmacy name if mentioned
+    - "location": location/address if mentioned
+    - "rx_volume": prescription volume if mentioned
+    5. "scheduling_preference": preferred time/date if requesting callback
+    6. "specific_requests": array of any specific service requests or questions
+
+    User message: "{message}"
+
+    Return only valid JSON, no other text.
+    """

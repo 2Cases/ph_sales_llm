@@ -204,7 +204,7 @@ analysis = flow_manager.analyze_user_message("Send me pricing info at test@pharm
 
 ### Run Comprehensive Demo (Refactored)
 ```bash
-python demo_refactored.py
+python demos/demo_refactored.py
 ```
 Shows the complete refactored architecture with clean error handling and logging.
 
@@ -216,7 +216,7 @@ Runs the original demonstration scenarios.
 
 ### Run Complete AI Demo
 ```bash
-python full_demo.py
+python demos/full_demo.py
 ```
 Comprehensive demonstration with full OpenAI integration.
 

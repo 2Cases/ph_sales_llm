@@ -4,7 +4,14 @@ Comprehensive demonstration of the refactored pharmacy sales chatbot.
 Shows clean architecture, proper error handling, and excellent usability.
 """
 
+import sys
 import time
+from pathlib import Path
+
+# Add the project root to Python path so imports work from any location
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 from core.chatbot import PharmacySalesChatbot
 from api.integration import PharmacyAPIClient
 from utils.logging_config import DebugContext
@@ -41,7 +48,11 @@ def demo_api_capabilities():
             
             # Show sample data
             for i, pharmacy in enumerate(pharmacies[:3], 1):
-                print(f"   {i}. {pharmacy.name} ({pharmacy.pharmacy_type.value}) - {pharmacy.location_display}")
+                name = pharmacy.get('name', 'Unknown')
+                city = pharmacy.get('city', 'Unknown')
+                state = pharmacy.get('state', 'Unknown')
+                rx_volume = pharmacy.get('rxVolume', 0)
+                print(f"   {i}. {name} ({city}, {state}) - {rx_volume:,} Rx/month")
             
             # Demonstrate search functionality
             print(f"\n🔍 Testing search functionality...")

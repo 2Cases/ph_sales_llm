@@ -1,0 +1,117 @@
+2025-08-27 09:47:26 | root | INFO | setup_logging:211 | 🚀 Logging system initialized
+2025-08-27 09:47:26 | root | INFO | setup_logging:212 | 📊 Log level: ERROR
+2025-08-27 09:47:26 | root | INFO | setup_logging:214 | 📁 Log file: logs/pharmacy_chatbot_20250827.log
+2025-08-27 09:47:26 | debug.chatbot_initialization | INFO | __enter__:228 | 🔍 DEBUG SESSION START: chatbot_initialization
+2025-08-27 09:47:26 | debug.chatbot_initialization | DEBUG | log_step:240 | 📍 OpenAI client initialized
+2025-08-27 09:47:26 | api_client | INFO | __init__:55 | Initialized API client for https://67e14fb758cc6bf785254550.mockapi.io
+2025-08-27 09:47:26 | debug.chatbot_initialization | DEBUG | log_step:240 | 📍 All components initialized
+2025-08-27 09:47:26 | debug.chatbot_initialization | DEBUG | log_step:240 | 📍 API health check passed
+2025-08-27 09:47:26 | debug.chatbot_initialization | INFO | __exit__:236 | ✅ DEBUG SESSION COMPLETE: chatbot_initialization | 0.49s
+2025-08-27 09:47:26 | pharmacy_chatbot | INFO | __init__:83 | 🤖 Chatbot initialized | Conversation ID: conv_20250827_094726
+2025-08-27 09:47:26 | debug.conversation_start | INFO | __enter__:228 | 🔍 DEBUG SESSION START: conversation_start
+2025-08-27 09:47:26 | debug.conversation_start | DEBUG | log_step:240 | 📍 Looking up pharmacy data
+2025-08-27 09:47:26 | api_client | DEBUG | find_pharmacy_by_phone:136 | Looking up pharmacy by phone: +1-555-123-4567
+2025-08-27 09:47:26 | api_client | DEBUG | get_all_pharmacies:86 | Fetching all pharmacies from API
+2025-08-27 09:47:26 | api_client | INFO | get_all_pharmacies:105 | Successfully retrieved 5 pharmacies
+2025-08-27 09:47:26 | api_client | INFO | find_pharmacy_by_phone:144 | Found pharmacy: HealthFirst Pharmacy
+2025-08-27 09:47:26 | pharmacy_chatbot | DEBUG | log_api_call:98 | 🌐 API: find_pharmacy_by_phone | ✅ SUCCESS
+2025-08-27 09:47:26 | conversation_manager | INFO | start_conversation:44 | Starting conversation for +1-555-123-4567
+2025-08-27 09:47:26 | debug.conversation_start | DEBUG | log_checkpoint:249 | 🏁 CHECKPOINT: conversation_initialized | Variables: is_known_pharmacy=True, pharmacy_name=HealthFirst Pharmacy
+2025-08-27 09:47:26 | pharmacy_chatbot | INFO | log_conversation_start:49 | 🎬 CONVERSATION START | +1-555-123-4567 | KNOWN PHARMACY
+2025-08-27 09:47:26 | pharmacy_chatbot | INFO | log_bot_response:72 | 🤖 BOT: Great! I see you're calling from HealthFirst Pharmacy in New York, NY. How can Pharmesol help you to...
+2025-08-27 09:47:26 | debug.conversation_start | INFO | __exit__:236 | ✅ DEBUG SESSION COMPLETE: conversation_start | 0.16s
+2025-08-27 09:47:26 | performance.chatbot.start_conversation | INFO | wrapper:267 | ⏱️ start_conversation completed in 0.159s
+2025-08-27 09:47:26 | debug.message_processing | INFO | __enter__:228 | 🔍 DEBUG SESSION START: message_processing
+2025-08-27 09:47:26 | debug.message_processing | DEBUG | log_step:240 | 📍 Analyzing user message
+2025-08-27 09:47:26 | pharmacy_chatbot | INFO | log_user_message:59 | 👤 USER: Can you send me pricing information?
+2025-08-27 09:47:26 | debug.message_processing | DEBUG | log_checkpoint:249 | 🏁 CHECKPOINT: message_analyzed | Variables: intent=request_email
+2025-08-27 09:47:26 | debug.message_processing | DEBUG | log_step:240 | 📍 Determining response strategy
+2025-08-27 09:47:26 | debug.message_processing | DEBUG | log_step:240 | 📍 Handling send_email response
+2025-08-27 09:47:26 | action_handler | INFO | execute_action:49 | Executing action: send_email
+2025-08-27 09:47:26 | function_calls | INFO | send_email:37 | Email sent to contact@healthfirst.com with subject: Following up on your call - HealthFirst Pharmacy
+2025-08-27 09:47:26 | pharmacy_chatbot | INFO | log_action_execution:83 | ⚡ ACTION: send_email | ✅ SUCCESS
+2025-08-27 09:47:26 | pharmacy_chatbot | INFO | log_bot_response:72 | 🤖 BOT: Email sent successfully to contact@healthfirst.com
+2025-08-27 09:47:26 | debug.message_processing | INFO | __exit__:236 | ✅ DEBUG SESSION COMPLETE: message_processing | 0.00s
+2025-08-27 09:47:26 | performance.chatbot.process_message | INFO | wrapper:267 | ⏱️ process_message completed in 0.001s
+2025-08-27 09:47:26 | api_client | DEBUG | close:252 | API client session closed
+2025-08-27 09:47:26 | pharmacy_chatbot | INFO | __exit__:397 | ✨ Chatbot session ended successfully
+2025-08-27 09:53:23 | root | INFO | setup_logging:211 | 🚀 Logging system initialized
+2025-08-27 09:53:23 | root | INFO | setup_logging:212 | 📊 Log level: ERROR
+2025-08-27 09:53:23 | root | INFO | setup_logging:214 | 📁 Log file: logs/pharmacy_chatbot_20250827.log
+2025-08-27 09:53:23 | debug.chatbot_initialization | INFO | __enter__:228 | 🔍 DEBUG SESSION START: chatbot_initialization
+2025-08-27 09:53:23 | debug.chatbot_initialization | DEBUG | log_step:240 | 📍 OpenAI client initialized
+2025-08-27 09:53:23 | api_client | INFO | __init__:65 | Initialized API client for None
+2025-08-27 09:53:23 | debug.chatbot_initialization | DEBUG | log_step:240 | 📍 All components initialized
+2025-08-27 09:53:23 | debug.chatbot_initialization | DEBUG | log_step:240 | 📍 API health check passed
+2025-08-27 09:53:23 | debug.chatbot_initialization | INFO | __exit__:236 | ✅ DEBUG SESSION COMPLETE: chatbot_initialization | 0.50s
+2025-08-27 09:53:23 | pharmacy_chatbot | INFO | __init__:83 | 🤖 Chatbot initialized | Conversation ID: conv_20250827_095323
+2025-08-27 09:53:23 | debug.conversation_start | INFO | __enter__:228 | 🔍 DEBUG SESSION START: conversation_start
+2025-08-27 09:53:23 | debug.conversation_start | DEBUG | log_step:240 | 📍 Looking up pharmacy data
+2025-08-27 09:53:23 | api_client | DEBUG | find_pharmacy_by_phone:146 | Looking up pharmacy by phone: +1-555-123-4567
+2025-08-27 09:53:23 | api_client | DEBUG | get_all_pharmacies:96 | Fetching all pharmacies from API
+2025-08-27 09:53:23 | api_client | INFO | get_all_pharmacies:115 | Successfully retrieved 5 pharmacies
+2025-08-27 09:53:23 | api_client | INFO | find_pharmacy_by_phone:154 | Found pharmacy: HealthFirst Pharmacy
+2025-08-27 09:53:23 | pharmacy_chatbot | DEBUG | log_api_call:98 | 🌐 API: find_pharmacy_by_phone | ✅ SUCCESS
+2025-08-27 09:53:23 | conversation_manager | INFO | start_conversation:44 | Starting conversation for +1-555-123-4567
+2025-08-27 09:53:23 | debug.conversation_start | DEBUG | log_checkpoint:249 | 🏁 CHECKPOINT: conversation_initialized | Variables: is_known_pharmacy=True, pharmacy_name=HealthFirst Pharmacy
+2025-08-27 09:53:23 | pharmacy_chatbot | INFO | log_conversation_start:49 | 🎬 CONVERSATION START | +1-555-123-4567 | KNOWN PHARMACY
+2025-08-27 09:53:23 | pharmacy_chatbot | INFO | log_bot_response:72 | 🤖 BOT: Great! I see you're calling from HealthFirst Pharmacy in New York, NY. How can Pharmesol help you to...
+2025-08-27 09:53:23 | debug.conversation_start | INFO | __exit__:236 | ✅ DEBUG SESSION COMPLETE: conversation_start | 0.16s
+2025-08-27 09:53:23 | performance.chatbot.start_conversation | INFO | wrapper:267 | ⏱️ start_conversation completed in 0.163s
+2025-08-27 09:53:23 | api_client | DEBUG | close:262 | API client session closed
+2025-08-27 09:53:23 | pharmacy_chatbot | INFO | __exit__:397 | ✨ Chatbot session ended successfully
+2025-08-27 09:56:56 | root | INFO | setup_logging:211 | 🚀 Logging system initialized
+2025-08-27 09:56:56 | root | INFO | setup_logging:212 | 📊 Log level: ERROR
+2025-08-27 09:56:56 | root | INFO | setup_logging:214 | 📁 Log file: logs/pharmacy_chatbot_20250827.log
+2025-08-27 09:56:56 | debug.chatbot_initialization | INFO | __enter__:228 | 🔍 DEBUG SESSION START: chatbot_initialization
+2025-08-27 09:56:56 | debug.chatbot_initialization | DEBUG | log_step:240 | 📍 OpenAI client initialized
+2025-08-27 09:56:56 | api_client | INFO | __init__:65 | Initialized API client for None
+2025-08-27 09:56:56 | debug.chatbot_initialization | DEBUG | log_step:240 | 📍 All components initialized
+2025-08-27 09:56:56 | debug.chatbot_initialization | DEBUG | log_step:240 | 📍 API health check passed
+2025-08-27 09:56:56 | debug.chatbot_initialization | INFO | __exit__:236 | ✅ DEBUG SESSION COMPLETE: chatbot_initialization | 0.69s
+2025-08-27 09:56:56 | pharmacy_chatbot | INFO | __init__:83 | 🤖 Chatbot initialized | Conversation ID: conv_20250827_095656
+2025-08-27 09:56:56 | debug.conversation_start | INFO | __enter__:228 | 🔍 DEBUG SESSION START: conversation_start
+2025-08-27 09:56:56 | debug.conversation_start | DEBUG | log_step:240 | 📍 Looking up pharmacy data
+2025-08-27 09:56:56 | api_client | DEBUG | find_pharmacy_by_phone:146 | Looking up pharmacy by phone: +1-555-123-4567
+2025-08-27 09:56:56 | api_client | DEBUG | get_all_pharmacies:96 | Fetching all pharmacies from API
+2025-08-27 09:56:56 | api_client | INFO | get_all_pharmacies:115 | Successfully retrieved 5 pharmacies
+2025-08-27 09:56:56 | api_client | INFO | find_pharmacy_by_phone:154 | Found pharmacy: HealthFirst Pharmacy
+2025-08-27 09:56:56 | pharmacy_chatbot | DEBUG | log_api_call:98 | 🌐 API: find_pharmacy_by_phone | ✅ SUCCESS
+2025-08-27 09:56:56 | conversation_manager | INFO | start_conversation:44 | Starting conversation for +1-555-123-4567
+2025-08-27 09:56:56 | debug.conversation_start | DEBUG | log_checkpoint:249 | 🏁 CHECKPOINT: conversation_initialized | Variables: is_known_pharmacy=True, pharmacy_name=HealthFirst Pharmacy
+2025-08-27 09:56:56 | pharmacy_chatbot | INFO | log_conversation_start:49 | 🎬 CONVERSATION START | +1-555-123-4567 | KNOWN PHARMACY
+2025-08-27 09:56:56 | pharmacy_chatbot | INFO | log_bot_response:72 | 🤖 BOT: Great! I see you're calling from HealthFirst Pharmacy in New York, NY. How can Pharmesol help you to...
+2025-08-27 09:56:56 | debug.conversation_start | INFO | __exit__:236 | ✅ DEBUG SESSION COMPLETE: conversation_start | 0.16s
+2025-08-27 09:56:56 | performance.chatbot.start_conversation | INFO | wrapper:267 | ⏱️ start_conversation completed in 0.161s
+2025-08-27 09:56:56 | debug.message_processing | INFO | __enter__:228 | 🔍 DEBUG SESSION START: message_processing
+2025-08-27 09:56:56 | debug.message_processing | DEBUG | log_step:240 | 📍 Analyzing user message
+2025-08-27 09:56:56 | pharmacy_chatbot | INFO | log_user_message:59 | 👤 USER: Test message
+2025-08-27 09:56:56 | debug.message_processing | DEBUG | log_checkpoint:249 | 🏁 CHECKPOINT: message_analyzed | Variables: intent=general_inquiry
+2025-08-27 09:56:56 | debug.message_processing | DEBUG | log_step:240 | 📍 Determining response strategy
+2025-08-27 09:56:56 | debug.message_processing | DEBUG | log_step:240 | 📍 Handling conversational response
+2025-08-27 09:56:56 | debug.message_processing | DEBUG | log_step:240 | 📍 Preparing LLM context
+2025-08-27 09:56:56 | debug.message_processing | DEBUG | log_step:240 | 📍 Calling LLM API
+2025-08-27 09:56:57 | httpcore.connection | DEBUG | trace:47 | connect_tcp.started host='api.openai.com' port=443 local_address=None timeout=5.0 socket_options=None
+2025-08-27 09:56:57 | httpcore.connection | DEBUG | trace:47 | connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x10dc5fa10>
+2025-08-27 09:56:57 | httpcore.connection | DEBUG | trace:47 | start_tls.started ssl_context=<ssl.SSLContext object at 0x1095b9250> server_hostname='api.openai.com' timeout=5.0
+2025-08-27 09:56:57 | httpcore.connection | DEBUG | trace:47 | start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x10af01910>
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | send_request_headers.started request=<Request [b'POST']>
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | send_request_headers.complete
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | send_request_body.started request=<Request [b'POST']>
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | send_request_body.complete
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | receive_response_headers.started request=<Request [b'POST']>
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wed, 27 Aug 2025 12:56:57 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'access-control-expose-headers', b'X-Request-ID'), (b'openai-organization', b'pharmeosl'), (b'openai-processing-ms', b'196'), (b'openai-project', b'proj_UNGA2OvVQjqt8jvFknZG3pPo'), (b'openai-version', b'2020-10-01'), (b'x-envoy-upstream-service-time', b'198'), (b'x-ratelimit-limit-requests', b'10000'), (b'x-ratelimit-limit-tokens', b'50000000'), (b'x-ratelimit-remaining-requests', b'9999'), (b'x-ratelimit-remaining-tokens', b'49999413'), (b'x-ratelimit-reset-requests', b'6ms'), (b'x-ratelimit-reset-tokens', b'0s'), (b'x-request-id', b'req_6e05fbc1d5b5411ba63b846d16a916a2'), (b'cf-cache-status', b'DYNAMIC'), (b'Set-Cookie', b'__cf_bm=KSrwV1Sp4kHihnVf5SGDk5Qf9EvudtpUYxOe44VNIUw-1756299417-1.0.1.1-7aED3CAbCSC4iyokMgzD3TZ9mSeQva5tC68dLFtqp8i6GaVYs4tN8lFoRD4.c0pUcmtntTkqwO3Idf88UlSf7m2YLX0t4UD.sHU9AWMRplA; path=/; expires=Wed, 27-Aug-25 13:26:57 GMT; domain=.api.openai.com; HttpOnly; Secure; SameSite=None'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'X-Content-Type-Options', b'nosniff'), (b'Set-Cookie', b'_cfuvid=IC6D8hvkEHomnugKDXxA4T7_EY_5HOBNIKA9zc3MHyU-1756299417968-0.0.1.1-604800000; path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None'), (b'Server', b'cloudflare'), (b'CF-RAY', b'975bbb5e0c41d841-EZE'), (b'Content-Encoding', b'gzip'), (b'alt-svc', b'h3=":443"; ma=86400')])
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | receive_response_body.started request=<Request [b'POST']>
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | receive_response_body.complete
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | response_closed.started
+2025-08-27 09:56:57 | httpcore.http11 | DEBUG | trace:47 | response_closed.complete
+2025-08-27 09:56:57 | pharmacy_chatbot | DEBUG | log_llm_call:113 | 🧠 LLM: gpt-3.5-turbo | ✅ SUCCESS | 501 tokens
+2025-08-27 09:56:57 | debug.message_processing | DEBUG | log_step:240 | 📍 LLM response generated successfully
+2025-08-27 09:56:57 | performance.chatbot._generate_llm_response | INFO | wrapper:267 | ⏱️ _generate_llm_response completed in 0.948s
+2025-08-27 09:56:57 | pharmacy_chatbot | INFO | log_bot_response:72 | 🤖 BOT: Hello! How can I assist you today?
+2025-08-27 09:56:57 | debug.message_processing | INFO | __exit__:236 | ✅ DEBUG SESSION COMPLETE: message_processing | 0.95s
+2025-08-27 09:56:57 | performance.chatbot.process_message | INFO | wrapper:267 | ⏱️ process_message completed in 0.949s
+2025-08-27 09:56:57 | api_client | DEBUG | close:262 | API client session closed
+2025-08-27 09:56:57 | pharmacy_chatbot | INFO | __exit__:397 | ✨ Chatbot session ended successfully
+2025-08-27 09:56:58 | httpcore.connection | DEBUG | trace:47 | close.started
+2025-08-27 09:56:58 | httpcore.connection | DEBUG | trace:47 | close.complete

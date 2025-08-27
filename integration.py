@@ -3,9 +3,14 @@ API integration module for pharmacy lookup and data retrieval.
 Handles communication with the mockapi.io pharmacy database.
 """
 
+import os
 import requests
 from typing import Optional, Dict, Any
 import logging
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -14,9 +19,14 @@ logger = logging.getLogger(__name__)
 class PharmacyLookup:
     """Handles pharmacy data lookup from the external API."""
     
-    def __init__(self, api_base_url: str = "https://67e14fb758cc6bf785254550.mockapi.io"):
-        self.api_base_url = api_base_url
-        self.pharmacies_endpoint = f"{api_base_url}/pharmacies"
+    def __init__(self, api_base_url: Optional[str] = None):
+        # Use environment variable or provided URL or default
+        self.api_base_url = (
+            api_base_url or 
+            os.getenv('PHARMACY_API_URL') or 
+            "https://67e14fb758cc6bf785254550.mockapi.io"
+        )
+        self.pharmacies_endpoint = f"{self.api_base_url}/pharmacies"
     
     def lookup_pharmacy_by_phone(self, phone_number: str) -> Optional[Dict[Any, Any]]:
         """

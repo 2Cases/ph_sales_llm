@@ -108,7 +108,7 @@ pharmechallenge/
 ├── api/                    # API integration layer
 │   ├── __init__.py
 │   ├── integration.py      # Robust API client with error handling
-│   └── llm.py              # Original LLM module (maintained for compatibility)
+│   └── llm.py              # Main chatbot class with LLM interactions
 ├── utils/                  # Utility modules
 │   ├── __init__.py
 │   ├── logging_config.py   # Advanced logging and debugging features

@@ -11,12 +11,12 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
-from prompt import (
+from utils.prompt import (
     SYSTEM_PROMPT, KNOWN_PHARMACY_TEMPLATE, UNKNOWN_PHARMACY_TEMPLATE,
     format_location_info, format_rx_volume_info, CONVERSATION_PROMPTS,
     EMAIL_TEMPLATES, get_rx_volume_benefits
 )
-from function_calls import send_email, schedule_callback, log_lead_information, create_follow_up_task
+from utils.function_calls import send_email, schedule_callback, log_lead_information, create_follow_up_task
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

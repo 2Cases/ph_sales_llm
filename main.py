@@ -7,8 +7,8 @@ import os
 import sys
 from typing import Optional
 from dotenv import load_dotenv
-from integration import PharmacyLookup
-from llm import PharmacyChatbot
+from api.integration import PharmacyLookup
+from api.llm import PharmacyChatbot
 
 # Load environment variables from .env file
 load_dotenv()

@@ -7,9 +7,9 @@ import unittest
 from unittest.mock import Mock, patch, MagicMock
 import json
 import requests
-from integration import PharmacyLookup
-from llm import PharmacyChatbot
-from function_calls import send_email, schedule_callback, log_lead_information
+from api.integration import PharmacyLookup
+from api.llm import PharmacyChatbot
+from utils.function_calls import send_email, schedule_callback, log_lead_information
 
 class TestPharmacyLookup(unittest.TestCase):
     """Test cases for pharmacy API integration."""
@@ -17,7 +17,7 @@ class TestPharmacyLookup(unittest.TestCase):
     def setUp(self):
         self.lookup = PharmacyLookup()
     
-    @patch('requests.get')
+    @patch('api.integration.requests.get')
     def test_lookup_existing_pharmacy(self, mock_get):
         """Test successful pharmacy lookup."""
         # Mock API response
@@ -51,7 +51,7 @@ class TestPharmacyLookup(unittest.TestCase):
         self.assertEqual(result['rxVolume'], 15000)
         self.assertEqual(result['city'], "Springfield")
     
-    @patch('requests.get')
+    @patch('api.integration.requests.get')
     def test_lookup_nonexistent_pharmacy(self, mock_get):
         """Test lookup for phone number not in database."""
         # Mock API response
@@ -74,7 +74,7 @@ class TestPharmacyLookup(unittest.TestCase):
         
         self.assertIsNone(result)
     
-    @patch('requests.get')
+    @patch('api.integration.requests.get')
     def test_api_request_failure(self, mock_get):
         """Test handling of API request failures."""
         # Mock request exception
@@ -84,7 +84,7 @@ class TestPharmacyLookup(unittest.TestCase):
         
         self.assertIsNone(result)
     
-    @patch('requests.get')
+    @patch('api.integration.requests.get')
     def test_malformed_api_response(self, mock_get):
         """Test handling of malformed API responses."""
         # Mock malformed response
@@ -97,7 +97,7 @@ class TestPharmacyLookup(unittest.TestCase):
         
         self.assertIsNone(result)
     
-    @patch('requests.get')
+    @patch('api.integration.requests.get')
     def test_missing_phone_field(self, mock_get):
         """Test handling of API response missing phone field."""
         # Mock API response with missing phone field
@@ -119,7 +119,7 @@ class TestPharmacyLookup(unittest.TestCase):
         
         self.assertIsNone(result)
     
-    @patch('requests.get')
+    @patch('api.integration.requests.get')
     def test_empty_api_response(self, mock_get):
         """Test handling of empty API response."""
         # Mock empty response
@@ -169,7 +169,7 @@ class TestPharmacyChatbot(unittest.TestCase):
         self.chatbot.start_conversation("+1234567890", None)
         
         # Mock send_email function
-        with patch('llm.send_email') as mock_send_email:
+        with patch('api.llm.send_email') as mock_send_email:
             mock_send_email.return_value = True
             
             response = self.chatbot.process_user_message("Please send me information at test@pharmacy.com")
@@ -183,8 +183,8 @@ class TestPharmacyChatbot(unittest.TestCase):
         self.chatbot.start_conversation("+1234567890", None)
         
         # Mock callback functions
-        with patch('llm.schedule_callback') as mock_schedule, \
-             patch('llm.create_follow_up_task') as mock_follow_up:
+        with patch('api.llm.schedule_callback') as mock_schedule, \
+             patch('api.llm.create_follow_up_task') as mock_follow_up:
             
             mock_schedule.return_value = {"callback_id": "CB-123", "status": "scheduled"}
             mock_follow_up.return_value = {"task_id": "TASK-123"}
@@ -205,7 +205,7 @@ class TestPharmacyChatbot(unittest.TestCase):
         self.assertEqual(self.chatbot.lead_data['email'], 'manager@springfieldpharm.com')
         self.assertIn('pharmacy_name', self.chatbot.lead_data)
     
-    @patch('llm.OpenAI')
+    @patch('api.llm.OpenAI')
     def test_llm_api_failure_handling(self, mock_openai):
         """Test handling of LLM API failures."""
         # Mock LLM API failure
@@ -286,7 +286,7 @@ class TestEdgeCases(unittest.TestCase):
             with self.assertRaises(ValueError):
                 PharmacyChatbot()
     
-    @patch('requests.get')
+    @patch('api.integration.requests.get')
     def test_api_timeout(self, mock_get):
         """Test API timeout handling."""
         mock_get.side_effect = requests.exceptions.Timeout()
@@ -302,7 +302,7 @@ class TestEdgeCases(unittest.TestCase):
         # Should still work, just with the invalid format stored
         self.assertEqual(self.chatbot.phone_number, "invalid_phone")
     
-    @patch('requests.get')
+    @patch('api.integration.requests.get')
     def test_partial_pharmacy_data(self, mock_get):
         """Test handling of pharmacy data with missing fields."""
         # Mock API response with partial data

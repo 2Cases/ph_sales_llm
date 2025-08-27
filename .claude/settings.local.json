@@ -5,7 +5,11 @@
       "Bash(pip3 install:*)",
       "Bash(source:*)",
       "Bash(pip install:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(PYTHONPATH=. python demos/demo.py)",
+      "Bash(PYTHONPATH=. timeout 10s python demos/demo_refactored.py)",
+      "Bash(PYTHONPATH=. python -c \"\nfrom core.chatbot import PharmacySalesChatbot\nfrom api.integration import PharmacyAPIClient\n\n# Test API client\ntry:\n    with PharmacyAPIClient() as api:\n        pharmacies = api.get_all_pharmacies()\n        print(f''✅ API Client: Retrieved {len(pharmacies)} pharmacies'')\nexcept Exception as e:\n    print(f''❌ API Client failed: {e}'')\n\n# Test chatbot basic functionality  \ntry:\n    with PharmacySalesChatbot(enable_debug=False) as bot:\n        greeting = bot.start_conversation(''+1-555-123-4567'')\n        print(f''✅ Chatbot: Generated greeting of {len(greeting)} characters'')\n        \n        summary = bot.get_conversation_summary()\n        print(f''✅ Chatbot: Summary generated with {summary[\"\"message_count\"\"]} messages'')\nexcept Exception as e:\n    print(f''❌ Chatbot failed: {e}'')\n\nprint(''✅ File organization and imports are working correctly!'')\n\")",
+      "Bash(PYTHONPATH=. python -c \"\nimport unittest\nimport sys\nsys.path.insert(0, ''.'')\nfrom demos.tests import *\n\n# Run a quick test\nif __name__ == ''__main__'':\n    # Test basic functionality\n    from api.integration import PharmacyLookup\n    from core.chatbot import PharmacySalesChatbot\n    \n    print(''✅ File organization complete and working!'')\n    print(''📁 Project structure:'')\n    print(''   • main.py (root level - entry point)'')\n    print(''   • core/ - Core chatbot architecture'')\n    print(''   • api/ - API integration layer'') \n    print(''   • utils/ - Utility modules'')\n    print(''   • demos/ - Demo scripts and tests'')\n    print(''   • docs/ - Documentation'')\n    \n    print(''🧪 All imports working correctly'')\n    print(''🚀 System ready for use!'')\n\")"
     ],
     "deny": [],
     "ask": []

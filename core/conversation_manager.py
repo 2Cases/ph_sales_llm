@@ -6,7 +6,7 @@ Separates conversation logic from LLM interactions for better maintainability.
 import logging
 import re
 from typing import Optional, Tuple, List
-from models import (
+from core.models import (
     ConversationState, PharmacyData, LeadData, ConversationStatus,
     ConversationMessage, ActionRequest, PharmacyType
 )

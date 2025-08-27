@@ -5,8 +5,8 @@ Complete demonstration of the pharmacy sales chatbot with full OpenAI integratio
 
 import os
 from dotenv import load_dotenv
-from integration import PharmacyLookup
-from llm import PharmacyChatbot
+from api.integration import PharmacyLookup
+from api.llm import PharmacyChatbot
 
 # Load environment variables
 load_dotenv()

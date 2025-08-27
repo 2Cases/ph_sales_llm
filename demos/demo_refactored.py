@@ -5,9 +5,9 @@ Shows clean architecture, proper error handling, and excellent usability.
 """
 
 import time
-from chatbot import PharmacySalesChatbot
-from integration import PharmacyAPIClient
-from logging_config import DebugContext
+from core.chatbot import PharmacySalesChatbot
+from api.integration import PharmacyAPIClient
+from utils.logging_config import DebugContext
 
 def print_section_header(title: str, emoji: str = "🎯"):
     """Print a clean section header."""

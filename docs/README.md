@@ -94,38 +94,25 @@ This system demonstrates:
 
 ```
 pharmechallenge/
-├── main.py                  # Main simulation script (entry point)
-├── README.md               # This documentation
+├── chatbot.py                # Main orchestrator - clean public API
+├── models.py                 # Clean data structures and business objects
+├── integration.py            # Robust API client with error handling  
+├── conversation_manager.py   # Business logic and conversation flow
+├── action_handler.py         # Action execution with comprehensive results
+├── logging_config.py         # Advanced logging and debugging features
+├── llm.py                   # Original LLM module (maintained for compatibility)
+├── prompt.py                # System prompts and conversation templates
+├── function_calls.py        # Mock utility functions (email, callbacks)
+├── main.py                  # Original simulation script
+├── demo_refactored.py       # Comprehensive architecture demonstration
+├── full_demo.py             # Complete AI integration demo
+├── tests.py                 # Comprehensive test suite
+├── logs/                    # Automatic log file directory
+│   └── pharmacy_chatbot_*.log
+├── .env                     # Environment configuration
+├── .env.example             # Environment template
 ├── requirements.txt         # Python dependencies
-├── .env                    # Environment configuration
-├── .env.example            # Environment template
-├── core/                   # Core chatbot architecture
-│   ├── __init__.py
-│   ├── chatbot.py          # Main orchestrator - clean public API
-│   ├── models.py           # Clean data structures and business objects
-│   ├── conversation_manager.py # Business logic and conversation flow
-│   └── action_handler.py   # Action execution with comprehensive results
-├── api/                    # API integration layer
-│   ├── __init__.py
-│   ├── integration.py      # Robust API client with error handling
-│   └── llm.py              # Original LLM module (maintained for compatibility)
-├── utils/                  # Utility modules
-│   ├── __init__.py
-│   ├── logging_config.py   # Advanced logging and debugging features
-│   ├── prompt.py           # System prompts and conversation templates
-│   └── function_calls.py   # Mock utility functions (email, callbacks)
-├── demos/                  # Demo scripts and tests
-│   ├── __init__.py
-│   ├── demo_refactored.py  # Comprehensive architecture demonstration
-│   ├── full_demo.py        # Complete AI integration demo
-│   ├── demo.py             # Basic functionality demo
-│   └── tests.py            # Comprehensive test suite
-├── docs/                   # Additional documentation
-│   ├── ARCHITECTURE_SUMMARY.md
-│   ├── ENVIRONMENT_CONFIG.md
-│   └── README.md           # Copy of main README
-└── logs/                   # Automatic log file directory
-    └── pharmacy_chatbot_*.log
+└── README.md               # This documentation
 ```
 
 ## ⚙️ Installation & Configuration

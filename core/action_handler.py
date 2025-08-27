@@ -6,8 +6,8 @@ Provides structured, testable, and maintainable action execution.
 import logging
 from typing import Dict, Any, Optional
 from datetime import datetime, timedelta
-from models import ConversationState, PharmacyType
-from function_calls import send_email, schedule_callback, log_lead_information, create_follow_up_task
+from core.models import ConversationState, PharmacyType
+from utils.function_calls import send_email, schedule_callback, log_lead_information, create_follow_up_task
 
 logger = logging.getLogger(__name__)
 

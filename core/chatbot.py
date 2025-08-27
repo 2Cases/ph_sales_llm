@@ -9,12 +9,12 @@ from datetime import datetime
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from models import ConversationState, PharmacyData
-from integration import PharmacyAPIClient, APIError
-from conversation_manager import ConversationFlowManager
-from action_handler import ActionHandler
-from logging_config import setup_logging, DebugContext, monitor_performance
-from prompt import SYSTEM_PROMPT
+from core.models import ConversationState, PharmacyData
+from api.integration import PharmacyAPIClient, APIError
+from core.conversation_manager import ConversationFlowManager
+from core.action_handler import ActionHandler
+from utils.logging_config import setup_logging, DebugContext, monitor_performance
+from utils.prompt import SYSTEM_PROMPT
 
 # Load environment variables
 load_dotenv()

@@ -6,8 +6,8 @@ Shows core functionality including API lookup and mock functions.
 
 import sys
 import time
-from integration import PharmacyLookup
-from function_calls import send_email, schedule_callback, log_lead_information
+from api.integration import PharmacyLookup
+from utils.function_calls import send_email, schedule_callback, log_lead_information
 
 def print_divider(title=""):
     """Print a section divider."""

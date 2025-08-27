@@ -2,6 +2,9 @@
 .env
 # Keep .env.example for reference
 
+# Logs
+logs/
+
 # Virtual environment
 venv/
 env/

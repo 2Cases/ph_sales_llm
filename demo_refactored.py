@@ -6,7 +6,7 @@ Shows clean architecture, proper error handling, and excellent usability.
 
 import time
 from chatbot import PharmacySalesChatbot
-from api_client import PharmacyAPIClient
+from integration import PharmacyAPIClient
 from logging_config import DebugContext
 
 def print_section_header(title: str, emoji: str = "🎯"):

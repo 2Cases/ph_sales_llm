@@ -35,7 +35,7 @@ This system demonstrates:
     │                             │                             │
     ▼                             ▼                             ▼
 ┌─────────────┐    ┌─────────────────────┐    ┌──────────────────┐
-│ api_client  │    │conversation_manager │    │ action_handler   │
+│ integration │    │conversation_manager │    │ action_handler   │
 │(API Layer)  │    │  (Business Logic)   │    │(Action Execution)│
 └─────────────┘    └─────────────────────┘    └──────────────────┘
 ```
@@ -50,8 +50,8 @@ This system demonstrates:
 
 **Key Benefits**: Type safety, data validation, clear business object definitions
 
-### 2. `api_client.py` - Robust API Integration
-- **PharmacyAPIClient**: Clean API interface with retry logic and connection pooling
+### 2. `integration.py` - Robust API Integration
+- **PharmacyLookup**: Clean API interface with retry logic and connection pooling
 - **Comprehensive Error Handling**: Graceful degradation for API failures
 - **Performance Features**: Connection pooling, automatic retries, health checks
 - **Search Capabilities**: Flexible pharmacy search and filtering
@@ -96,11 +96,10 @@ This system demonstrates:
 pharmechallenge/
 ├── chatbot.py                # Main orchestrator - clean public API
 ├── models.py                 # Clean data structures and business objects
-├── api_client.py             # Robust API client with error handling  
+├── integration.py            # Robust API client with error handling  
 ├── conversation_manager.py   # Business logic and conversation flow
 ├── action_handler.py         # Action execution with comprehensive results
 ├── logging_config.py         # Advanced logging and debugging features
-├── integration.py            # Original API integration (maintained for compatibility)
 ├── llm.py                   # Original LLM module (maintained for compatibility)
 ├── prompt.py                # System prompts and conversation templates
 ├── function_calls.py        # Mock utility functions (email, callbacks)
@@ -174,7 +173,7 @@ with PharmacySalesChatbot(enable_debug=True) as bot:
 
 ### Component Testing
 ```python
-from api_client import PharmacyAPIClient
+from integration import PharmacyAPIClient
 from conversation_manager import ConversationFlowManager
 
 # Test components independently (uses PHARMACY_API_URL from environment)
@@ -234,7 +233,7 @@ with PharmacySalesChatbot(enable_debug=True) as bot:
 ### Component Health Checks
 ```bash
 python -c "
-from api_client import PharmacyAPIClient
+from integration import PharmacyAPIClient
 with PharmacyAPIClient() as api:
     print('API Health:', api.health_check())
     print('API Stats:', api.get_api_stats())

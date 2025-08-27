@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from models import ConversationState, PharmacyData
-from api_client import PharmacyAPIClient, APIError
+from integration import PharmacyAPIClient, APIError
 from conversation_manager import ConversationFlowManager
 from action_handler import ActionHandler
 from logging_config import setup_logging, DebugContext, monitor_performance
@@ -100,11 +100,17 @@ class PharmacySalesChatbot:
             # Look up pharmacy information
             pharmacy_data = None
             try:
-                pharmacy_data = self.api_client.find_pharmacy_by_phone(phone_number)
+                raw_pharmacy_data = self.api_client.find_pharmacy_by_phone(phone_number)
+                if raw_pharmacy_data:
+                    # Convert dictionary to PharmacyData object
+                    pharmacy_data = PharmacyData.from_api_response(raw_pharmacy_data)
                 self.logger.log_api_call("find_pharmacy_by_phone", success=True)
             except APIError as e:
                 self.logger.log_api_call("find_pharmacy_by_phone", success=False)
                 debug.log_step(f"API lookup failed: {e}")
+            except Exception as e:
+                self.logger.log_api_call("find_pharmacy_by_phone", success=False)
+                debug.log_step(f"Data conversion failed: {e}")
             
             # Initialize conversation state
             self.conversation_state = self.conversation_manager.start_conversation(

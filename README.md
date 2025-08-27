@@ -119,6 +119,7 @@ pharmechallenge/
 │   ├── demo_refactored.py  # Comprehensive architecture demonstration
 │   ├── full_demo.py        # Complete AI integration demo
 │   ├── demo.py             # Basic functionality demo
+├── tests/    
 │   └── tests.py            # Comprehensive test suite
 ├── docs/                   # Additional documentation
 │   ├── ARCHITECTURE_SUMMARY.md
@@ -229,7 +230,7 @@ Allows real-time conversation with the chatbot.
 
 ### Run Tests
 ```bash
-python tests.py
+python main.py tests
 ```
 
 ### Enable Debug Logging

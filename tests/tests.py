@@ -372,6 +372,16 @@ def run_integration_tests():
     except Exception as e:
         print(f"❌ Integration test failed: {e}")
 
+def run_all_tests():
+    """Run all unit tests and integration tests."""
+    print("🧪 Running unit tests...")
+    # Run unit tests
+    unittest.main(argv=[''], exit=False, verbosity=2)
+    
+    print("\n🔗 Running integration tests...")
+    # Run integration tests
+    run_integration_tests()
+
 if __name__ == '__main__':
     # Run unit tests
     print("Running unit tests...")
